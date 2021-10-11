@@ -42,37 +42,63 @@ namespace ProjectPartA_A1
             int i = 0;
             while (i < nrArticles)
             {
-                Console.WriteLine($"Please enter the name and price for article #{i} in the format name; price (example Beer; 2,25): ");
-                string userinput = Console.ReadLine();
-                string[] articleSplit = userinput.Split(';');
-                string name;
-                decimal price;
-
-                name = articleSplit[0].Trim();
-
-                if (string.IsNullOrEmpty(articleSplit[0]) || name.Length > _maxArticleNameLength)
+                Console.WriteLine($"\nPlease enter the name and price for article #{i} in the format name; price (example Beer; 2,25): ");
+                try
                 {
-                    Console.WriteLine("Wrong name input, please enter a name (example candy)");
-                    continue;
-                }
-                if (!decimal.TryParse(articleSplit[1], out price))
-                {
-                    Console.WriteLine("Wrong price input, please enter a number (example 43,27)");
-                    continue;
-                }
+                    string userinput = Console.ReadLine();
+                    string[] articleSplit = userinput.Split(';');
+                    string name;
+                    decimal price;
 
-                articles[i].Name = name;
-                articles[i].Price = price;
+                    name = articleSplit[0].Trim();
 
-                i++;
+                    if (string.IsNullOrEmpty(articleSplit[0]) || name.Length > _maxArticleNameLength)
+                    {
+                        Console.WriteLine("Wrong name input, please enter a name (example candy)");
+                        continue;
+                    }
+                    if (!decimal.TryParse(articleSplit[1], out price))
+                    {
+                        Console.WriteLine("Wrong price input, please enter a number (example 43,27)");
+                        continue;
+                    }
+
+
+                    articles[i].Name = name;
+                    articles[i].Price = price;
+                    i++;
+                }
+                catch (IndexOutOfRangeException ex)
+                { Console.WriteLine("Wrong format input, please enter a valid format input (example Beer;23,92)", ex.Message); }
             }
         }
         private static void PrintReciept()
         {
             //Your code to print out a reciept
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine($"Receipt Purchased Articles \nPurchace date: {DateTime.Now}");
             Console.WriteLine();
             Console.WriteLine($"Number of articles purchased: {nrArticles}");
+            Console.WriteLine();
+            Console.WriteLine("{0,-3} {1,-15} {2,20}", "#", "Name", "Price");
+
+            for (int i = 0; i < articles.Length; i++)
+            {
+                if (articles[i].Name != null)
+                {
+                    Console.WriteLine("{0,-3} {1,-15} {2,20:C2}", i, articles[i].Name, articles[i].Price);
+                }
+            }
+            decimal total = 0;
+            for (int i = 0; i < articles.Length; i++)
+            {
+                total += articles[i].Price;
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("{0,-3} {1,24:C2}", "Total Purhcase:", total);
+            Console.WriteLine("{0,-3} {1,19:C2}", "Including VAT (25%):", total * _vat);
         }
     }
 }
