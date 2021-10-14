@@ -63,7 +63,6 @@ namespace ProjectPartA_A1
                         continue;
                     }
 
-
                     articles[i].Name = name;
                     articles[i].Price = price;
                     i++;
