@@ -47,7 +47,7 @@ namespace ProjectPartA_A1
                 {
                     string userinput = Console.ReadLine();
                     string[] articleSplit = userinput.Split(';');
-                    string name;
+                    string name; 
                     decimal price;
 
                     name = articleSplit[0].Trim();
