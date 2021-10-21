@@ -127,28 +127,24 @@ namespace ProjectPartA_A2
 
             Console.WriteLine("Please enter the name of the article you would like to remove (example Chocolate)");
             string chooseArticle = Console.ReadLine().ToLower();
-            try
+            bool doesArticleExist = false;
+            for (int i = 0; i < articles.Length; i++)
             {
-                for (int i = 0; i < nrArticles; i++)
+                if (articles[i].Name == null || string.IsNullOrEmpty(chooseArticle))
                 {
-                    if (articles[i].Name == null)
-                    {
-                        continue;
-                    }
-                    if (articles[i].Name.ToLower().Contains(chooseArticle) == true)
-                    {
-                        Console.WriteLine($"Article {articles[i].Name} has been removed");
-                        Array.Clear(articles, i, 1);
-                        nrArticles--;
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("This article does NOT exist");
-                    }
+                    continue;
+                }
+                else if (articles[i].Name.ToLower().Contains(chooseArticle) == true)
+                {
+                    doesArticleExist = true;
+                    Console.WriteLine($"\nArticle {articles[i].Name} has been removed");
+                    Array.Clear(articles, i, 1);
+                    nrArticles--;
+                    break;
                 }
             }
-            catch (Exception)
+
+            if (!doesArticleExist)
             {
                 Console.WriteLine("This article does NOT exist");
             }
@@ -189,10 +185,10 @@ namespace ProjectPartA_A2
             //Your code to Sort. Either BubbleSort or SelectionSortfor (int i = 0; i < array.Length; i++)
             if (sortByName == true)
             {
-                for (int c = 0; c < nrArticles - 1; c++)
+                for (int c = 0; c < articles.Length - 1; c++)
                 {
                     bool isAnyChange = false;
-                    for (int r = 0; r < (nrArticles - 1); r++)
+                    for (int r = 0; r < (articles.Length - 1); r++)
                     {
                         if (string.Compare(articles[r + 1].Name, articles[r].Name) < 0)
                         {
@@ -210,10 +206,10 @@ namespace ProjectPartA_A2
             }
             if (sortByName == false)
             {
-                for (int i = 0; i < nrArticles - 1; i++)
+                for (int i = 0; i < articles.Length - 1; i++)
                 {
                     bool isAnyChange = false;
-                    for (int j = 0; j < nrArticles - 1; j++)
+                    for (int j = 0; j < articles.Length - 1; j++)
                     {
                         if (articles[j].Price > articles[j + 1].Price)
                         {
