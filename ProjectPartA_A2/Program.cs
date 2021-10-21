@@ -76,10 +76,13 @@ namespace ProjectPartA_A2
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
         private static void ReadAnArticle()
         {
             int i = nrArticles;
+            if (nrArticles == _maxNrArticles)
+            {
+                Console.WriteLine("You have reached the maximum amount of articles!");
+            }
             while (nrArticles < _maxNrArticles)
             {
                 Console.WriteLine($"\nPlease enter the name and price for article #{nrArticles} in the format name; price (example Beer; 2,25): ");
@@ -87,12 +90,10 @@ namespace ProjectPartA_A2
                 {
                     string userinput = Console.ReadLine();
                     string[] articleSplit = userinput.Split(';');
-                    string name;
+
                     decimal price;
 
-                    name = articleSplit[0].Trim();
-
-                    if (string.IsNullOrEmpty(articleSplit[0]) || name.Length > _maxArticleNameLength)
+                    if (string.IsNullOrEmpty(articleSplit[0]) || articleSplit[0].Length > _maxArticleNameLength)
                     {
                         Console.WriteLine("Wrong name input, please enter a name (example candy)");
                         continue;
@@ -104,10 +105,15 @@ namespace ProjectPartA_A2
                     }
                     if (articles[i].Name == null)
                     {
-                        articles[i].Name = name;
+                        articles[i].Name = articleSplit[0];
                         articles[i].Price = price;
                         i++;
                         nrArticles++;
+                    }
+                    if (nrArticles == _maxNrArticles)
+                    {
+                        Console.WriteLine("You have reached the maximum amount of articles!");
+                        break;
                     }
                 }
                 catch (IndexOutOfRangeException ex)
@@ -115,32 +121,37 @@ namespace ProjectPartA_A2
                 break;
             }
         }
-
-        private static bool RemoveAnArticle()
+        private static void RemoveAnArticle()
         {
             //Your code to remove an article
 
             Console.WriteLine("Please enter the name of the article you would like to remove (example Chocolate)");
-            string chooseArticle = Console.ReadLine().ToUpper();
-
-            for (int i = 0; i < articles.Length; i++)
+            string chooseArticle = Console.ReadLine().ToLower();
+            try
             {
-                if (articles[i].Name.ToUpper().Contains(chooseArticle))
+                for (int i = 0; i < nrArticles; i++)
                 {
-                    Console.WriteLine($"Article {articles[i].Name} has been removed");
-                    Array.Clear(articles, i, 1);
-                    nrArticles--;
-                    return true;
+                   /* if (articles[i].Name == null)
+                    {
+                        continue;
+                    }*/
+                    if (articles[i].Name.ToLower().Contains(chooseArticle) == true)
+                    {
+                        Console.WriteLine($"Article {articles[i].Name} has been removed");
+                        Array.Clear(articles, i, 1);
+                        nrArticles--;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("This article does NOT exist");
+                    }
                 }
-                
-              /*  if (string.IsNullOrWhiteSpace(chooseArticle) || !articles[i].Name.ToUpper().Contains(chooseArticle))
-                {
-
-                    Console.WriteLine("This articles does NOT exist");
-                    return false;
-                } */
             }
-            return false;
+            catch (Exception)
+            {
+                Console.WriteLine("This article does NOT exist");
+            }
         }
 
         private static void PrintReciept(string title)
@@ -173,16 +184,15 @@ namespace ProjectPartA_A2
             Console.WriteLine();
             Console.WriteLine();
         }
-
         private static void SortArticles(bool sortByName = false)
         {
             //Your code to Sort. Either BubbleSort or SelectionSortfor (int i = 0; i < array.Length; i++)
             if (sortByName == true)
             {
-                for (int c = 0; c < articles.Length; c++)
+                for (int c = 0; c < nrArticles - 1; c++)
                 {
                     bool isAnyChange = false;
-                    for (int r = 0; r < (articles.Length - 1); r++)
+                    for (int r = 0; r < (nrArticles - 1); r++)
                     {
                         if (string.Compare(articles[r + 1].Name, articles[r].Name) < 0)
                         {
@@ -200,10 +210,10 @@ namespace ProjectPartA_A2
             }
             if (sortByName == false)
             {
-                for (int i = 0; i < articles.Length; i++)
+                for (int i = 0; i < nrArticles - 1; i++)
                 {
                     bool isAnyChange = false;
-                    for (int j = 0; j < articles.Length - 1; j++)
+                    for (int j = 0; j < nrArticles - 1; j++)
                     {
                         if (articles[j].Price > articles[j + 1].Price)
                         {
