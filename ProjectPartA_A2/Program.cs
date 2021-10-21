@@ -131,10 +131,10 @@ namespace ProjectPartA_A2
             {
                 for (int i = 0; i < nrArticles; i++)
                 {
-                   /* if (articles[i].Name == null)
+                    if (articles[i].Name == null)
                     {
                         continue;
-                    }*/
+                    }
                     if (articles[i].Name.ToLower().Contains(chooseArticle) == true)
                     {
                         Console.WriteLine($"Article {articles[i].Name} has been removed");
