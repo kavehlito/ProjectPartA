@@ -15,7 +15,7 @@ namespace ProjectPartA_A2
         const decimal _vat = 0.25M;
 
         static Article[] articles = new Article[_maxNrArticles];
-        static int nrArticles = 0;
+        static int nrArticles;
 
         static void Main(string[] args)
         {
@@ -104,10 +104,10 @@ namespace ProjectPartA_A2
                     }
                     if (articles[i].Name == null)
                     {
-                    articles[i].Name = name;
-                    articles[i].Price = price;
-                    i++;
-                    nrArticles++;
+                        articles[i].Name = name;
+                        articles[i].Price = price;
+                        i++;
+                        nrArticles++;
                     }
                 }
                 catch (IndexOutOfRangeException ex)
@@ -116,27 +116,33 @@ namespace ProjectPartA_A2
             }
         }
 
-        private static void RemoveAnArticle()
+        private static bool RemoveAnArticle()
         {
             //Your code to remove an article
-            Console.WriteLine("Please enter the name of the article you would like to remove (example Chocolate)");
 
+            Console.WriteLine("Please enter the name of the article you would like to remove (example Chocolate)");
             string chooseArticle = Console.ReadLine().ToUpper();
+
             for (int i = 0; i < articles.Length; i++)
             {
-                if (articles[i].Name.ToUpper().Contains(chooseArticle) == true)
+                if (articles[i].Name.ToUpper().Contains(chooseArticle))
                 {
+                    Console.WriteLine($"Article {articles[i].Name} has been removed");
                     Array.Clear(articles, i, 1);
                     nrArticles--;
-                    break;
+                    return true;
                 }
-                else
+                
+              /*  if (string.IsNullOrWhiteSpace(chooseArticle) || !articles[i].Name.ToUpper().Contains(chooseArticle))
                 {
-                    Console.WriteLine("This article does NOT exist");
-                    break;
-                }
+
+                    Console.WriteLine("This articles does NOT exist");
+                    return false;
+                } */
             }
+            return false;
         }
+
         private static void PrintReciept(string title)
         {
             //Your code to print a receipt
@@ -146,12 +152,13 @@ namespace ProjectPartA_A2
             Console.WriteLine();
             Console.WriteLine("{0,-3} {1,-15} {2,20}", "#", "Name", "Price");
 
-
+            int articleposition = 0;
             for (int i = 0; i < articles.Length; i++)
             {
                 if (articles[i].Name != null)
                 {
-                    Console.WriteLine("{0,-3} {1,-15} {2,20:C2}", i, articles[i].Name, articles[i].Price);
+                    Console.WriteLine("{0,-3} {1,-15} {2,20:C2}", articleposition, articles[i].Name, articles[i].Price);
+                    articleposition++;
                 }
             }
             decimal total = 0;
@@ -177,7 +184,7 @@ namespace ProjectPartA_A2
                     bool isAnyChange = false;
                     for (int r = 0; r < (articles.Length - 1); r++)
                     {
-                        if (string.Compare(articles[r].Name, articles[r + 1].Name) < 0)
+                        if (string.Compare(articles[r + 1].Name, articles[r].Name) < 0)
                         {
                             isAnyChange = true;
                             (articles[r], articles[r + 1]) = (articles[r + 1], articles[r]);
@@ -198,7 +205,7 @@ namespace ProjectPartA_A2
                     bool isAnyChange = false;
                     for (int j = 0; j < articles.Length - 1; j++)
                     {
-                        if (articles[j].Price < articles[j + 1].Price)
+                        if (articles[j].Price > articles[j + 1].Price)
                         {
                             isAnyChange = true;
                             (articles[j], articles[j + 1]) = (articles[j + 1], articles[j]);
@@ -206,7 +213,7 @@ namespace ProjectPartA_A2
                     }
                     if (!isAnyChange)
                     {
-                        Console.WriteLine($"Articles Sorted by Price\n");
+                        Console.WriteLine($"Articles Sorted by Price");
                         PrintReciept("Price");
                         break;
                     }
