@@ -134,7 +134,7 @@ namespace ProjectPartA_A2
                 {
                     continue;
                 }
-                else if (articles[i].Name.ToLower().Contains(chooseArticle) == true)
+                else if (articles[i].Name.ToLower() == chooseArticle)
                 {
                     doesArticleExist = true;
                     Console.WriteLine($"\nArticle {articles[i].Name} has been removed");
@@ -205,7 +205,7 @@ namespace ProjectPartA_A2
                 }
             }
             if (sortByName == false)
-            {
+            {   
                 for (int i = 0; i < articles.Length - 1; i++)
                 {
                     bool isAnyChange = false;
